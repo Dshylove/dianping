@@ -1,4 +1,10 @@
 # 仿大众点评APP后端+后台管理系统
+**技术栈**：Spring + Spring MVC + MyBatis + jQuery + Maven
+
+## 项目介绍
+- Web APP采用前后端分离模式，前端路由，通过Ajax + json进行数据交互，由前端渲染
+- 后台管理系统采用传统开发模式，后端路由，页面使用iframe版，服务器端渲染
+- 后端API接口使用RESTful风格
 
 ## 项目总结
 
