@@ -15,9 +15,12 @@ import com.dgx.dianping.dto.AdDto;
 import com.dgx.dianping.dto.ApiCodeDto;
 import com.dgx.dianping.dto.BusinessDto;
 import com.dgx.dianping.dto.BusinessListDto;
+import com.dgx.dianping.dto.OrderForBuyDto;
+import com.dgx.dianping.dto.OrdersDto;
 import com.dgx.dianping.service.AdService;
 import com.dgx.dianping.service.BusinessService;
 import com.dgx.dianping.service.MemberService;
+import com.dgx.dianping.service.OrdersService;
 import com.dgx.dianping.util.CommonUtil;
 
 @RestController
@@ -32,6 +35,9 @@ public class ApiController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	@Autowired
+	private OrdersService ordersService;
 	
 	@Value("${ad.number}") // 读取配置文件
 	private int adNumber;
@@ -88,6 +94,20 @@ public class ApiController {
 	}
 	
 	/**
+	 * 订单列表
+	 */
+	@RequestMapping(value="/orderlist/{username}",method=RequestMethod.GET)
+	public List<OrdersDto> orderlist(@PathVariable("username")Long username) {
+		// TODO 验证用户，校验token，只允许查询本用户的订单列表~
+		// 根据手机号取出会员id
+		Long memberId = memberService.getIdByPhone(username);
+		if(memberId != null) {	// 会员主键id不为空才查询
+			return ordersService.getListByMemberId(memberId);
+		}
+		return null;
+	}
+	
+	/**
 	 * 根据手机号下发短信验证码
 	 */
 	@RequestMapping(value="/sms",method=RequestMethod.POST)
@@ -136,6 +156,32 @@ public class ApiController {
 			}
 		} else {
 			dto = new ApiCodeDto(ApiCodeEnum.CODE_INVALID);
+		}
+		return dto;
+	}
+	
+	/**
+	 * 买单
+	 */
+	@RequestMapping(value="/order",method=RequestMethod.POST)
+	public ApiCodeDto order(OrderForBuyDto orderForBuyDto) {
+		ApiCodeDto dto;
+		// 1、校验token是否有效（缓存中是否存在这样一个token，并且对应存放的会员信息（这里指的是手机号）与提交上来的信息一致）
+		Long phone = memberService.getPhone(orderForBuyDto.getToken());
+		if(phone != null && phone.equals(orderForBuyDto.getUsername())) {
+			// 2、根据手机号获取会员主键
+			Long memberId = memberService.getIdByPhone(phone);
+			// 3、保存订单
+			OrdersDto ordersDto = new OrdersDto();
+			ordersDto.setNum(orderForBuyDto.getNum());
+			ordersDto.setPrice(orderForBuyDto.getPrice());
+			ordersDto.setBusinessId(orderForBuyDto.getId());
+			ordersDto.setMemberId(memberId);
+			ordersService.add(ordersDto);
+			dto = new ApiCodeDto(ApiCodeEnum.SUCCESS);
+			// 4、TODO 还有一件重要的事未做
+		} else {
+			dto = new ApiCodeDto(ApiCodeEnum.NOT_LOGGED);
 		}
 		return dto;
 	}
