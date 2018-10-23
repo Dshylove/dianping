@@ -86,13 +86,14 @@
 		                    <div class="left">
 		                        <div class="ileft" id="subMenuDiv"><h3 onclick="clickSubMenu(this,'/ad')"><a>广告管理</a></h3></div>
 		                        <div class="ileft" id="subMenuDiv"><h3 onclick="clickSubMenu(this,'/businesses')"><a>商户管理</a></h3></div>
+		                        <div class="ileft" id="subMenuDiv"><h3 onclick="clickSubMenu(this,'/orders')"><a>订单查询</a></h3></div>
 		                    </div>
 		                </td>
 		                <td width="7">
 		                    <div class="pointer"></div>
 		                </td>
 		                <td style="vertical-align:top" height="600px" width="100%">
-		                	<br/><iframe id="mainPage" src="${basePath}/ad" frameborder="1" height="580px" width="100%"></iframe><br/>
+		                	<br/><iframe id="mainPage" src="${basePath}/ad" frameborder="0" height="580px" width="100%"></iframe><br/>
 		                 </td>
 		            </tr>
 		            </tbody>
