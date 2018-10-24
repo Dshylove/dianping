@@ -15,10 +15,14 @@ import com.dgx.dianping.dto.AdDto;
 import com.dgx.dianping.dto.ApiCodeDto;
 import com.dgx.dianping.dto.BusinessDto;
 import com.dgx.dianping.dto.BusinessListDto;
+import com.dgx.dianping.dto.CommentForSubmitDto;
+import com.dgx.dianping.dto.CommentListDto;
 import com.dgx.dianping.dto.OrderForBuyDto;
 import com.dgx.dianping.dto.OrdersDto;
+import com.dgx.dianping.pojo.Page;
 import com.dgx.dianping.service.AdService;
 import com.dgx.dianping.service.BusinessService;
+import com.dgx.dianping.service.CommentService;
 import com.dgx.dianping.service.MemberService;
 import com.dgx.dianping.service.OrdersService;
 import com.dgx.dianping.util.CommonUtil;
@@ -38,6 +42,9 @@ public class ApiController {
 	
 	@Autowired
 	private OrdersService ordersService;
+	
+	@Autowired
+	private CommentService commentService;
 	
 	@Value("${ad.number}") // 读取配置文件
 	private int adNumber;
@@ -94,6 +101,14 @@ public class ApiController {
 	}
 	
 	/**
+	 * 详情页 - 用户评论
+	 */
+	@RequestMapping(value="/detail/comment/{currentPage}/{businessId}",method=RequestMethod.GET)
+	public CommentListDto detail(@PathVariable("businessId")Long businessId,Page page) {
+		return commentService.getListByBusinessId(businessId, page);
+	}
+
+	/**
 	 * 订单列表
 	 */
 	@RequestMapping(value="/orderlist/{username}",method=RequestMethod.GET)
@@ -106,6 +121,8 @@ public class ApiController {
 		}
 		return null;
 	}
+	
+	
 	
 	/**
 	 * 根据手机号下发短信验证码
@@ -180,6 +197,37 @@ public class ApiController {
 			ordersService.add(ordersDto);
 			dto = new ApiCodeDto(ApiCodeEnum.SUCCESS);
 			// 4、TODO 还有一件重要的事未做
+		} else {
+			dto = new ApiCodeDto(ApiCodeEnum.NOT_LOGGED);
+		}
+		return dto;
+	}
+	
+	/**
+	 * 提交评论
+	 */
+	@RequestMapping(value="/submitComment",method=RequestMethod.POST)
+	public ApiCodeDto submitComment(CommentForSubmitDto commentForSubmitDto) {
+		ApiCodeDto dto;
+		// 1、校验登录信息：token、手机号
+		Long phone = memberService.getPhone(commentForSubmitDto.getToken());
+		if(phone != null && phone.equals(commentForSubmitDto.getUsername())) {
+			// 2、根据手机号获取会员id
+			Long memberId = memberService.getIdByPhone(phone);
+			// 3、(判断订单是否属于该登录会员)根据提交上来的订单id获取对应的会员id，校验与当前登录的会员是否一致
+			OrdersDto ordersDto = ordersService.getById(commentForSubmitDto.getId());
+			if(memberId.equals(ordersDto.getMemberId())) {
+				// 4、保存评论
+				if(commentService.add(commentForSubmitDto)) {
+					dto = new ApiCodeDto(ApiCodeEnum.SUCCESS);
+					// TODO 5、定时任务
+				} else {
+					dto = null;
+					System.err.println("保存失败！");
+				}
+			} else {
+				dto = new ApiCodeDto(ApiCodeEnum.NO_AUTH);
+			}
 		} else {
 			dto = new ApiCodeDto(ApiCodeEnum.NOT_LOGGED);
 		}
