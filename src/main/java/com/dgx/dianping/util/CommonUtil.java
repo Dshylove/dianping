@@ -5,6 +5,9 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import com.dgx.dianping.constant.SessionKeyConst;
+import com.dgx.dianping.dto.ActionDto;
+
 public class CommonUtil {
 
 	/**
@@ -46,7 +49,7 @@ public class CommonUtil {
 	 * @param method http动作
 	 * @return true:包含，false：不包含
 	 */
-	/*public static boolean contains(HttpSession session,String url,String method) {
+	public static boolean contains(HttpSession session,String url,String method) {
 		Object obj = session.getAttribute(SessionKeyConst.ACTION_INFO);
 		if(obj != null) {
 			@SuppressWarnings("unchecked")
@@ -62,5 +65,5 @@ public class CommonUtil {
 			}
 		}
 		return false;
-	}*/
+	}
 }

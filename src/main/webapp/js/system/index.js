@@ -36,7 +36,7 @@ function initSubMenu(parentId) {
 	var menuList = menuMap[parentId];
 	$("#subMenuDiv").html("");
 	$.each(menuList,function(i,value) {
-		$("#subMenuDiv").append("<h3 onclick=\"clickSubMenu(this,'/ad'");
+		$("#subMenuDiv").append("<h3 onclick=\"clickSubMenu(this,'" + value.url + "')\"><a>" + value.name + "</a></h3>");
 	});
 }
 

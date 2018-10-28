@@ -56,7 +56,7 @@
 		</div>
 		
 		<form method="post" action="${basePath}/session" id="mainForm">
-			<!-- <input type="hidden" name="_method" value="DELETE"/> -->
+			<input type="hidden" name="_method" value="DELETE"/>
 		    <div id="header">
 		        <div class="iheader">
 		            <div class="logo"><a href="#"><img src="" alt="" height="88px" width="99px"/></a> </div>
@@ -71,10 +71,12 @@
 		                </div>
 		            </div>
 		            <ul class="nav" id="menuDiv">
-		            	
+		           		<!-- 
 		            	<li onclick="clickMenu(this)" class="on"><a><span>系统管理</span></a></li>
 		            	<li onclick="clickMenu(this)" class=""><a><span>内容管理</span></a></li>
 		            	<li onclick="clickMenu(this)" class=""><a><span>统计报表</span></a></li>
+		            	 -->
+		            	
 		            </ul>
 		        </div>
 		    </div>
@@ -83,12 +85,16 @@
 		            <tbody>
 		            <tr>
 		                <td class="leftTd" style="vertical-align:top" width="150">
+		                    
 		                    <div class="left">
-		                        <div class="ileft" id="subMenuDiv"><h3 onclick="clickSubMenu(this,'/ad')"><a>广告管理</a></h3></div>
-		                        <div class="ileft" id="subMenuDiv"><h3 onclick="clickSubMenu(this,'/businesses')"><a>商户管理</a></h3></div>
-		                        <div class="ileft" id="subMenuDiv"><h3 onclick="clickSubMenu(this,'/orders')"><a>订单查询</a></h3></div>
-		                        <div class="ileft" id="subMenuDiv"><h3 onclick="clickSubMenu(this,'/comments')"><a>评论查询</a></h3></div>
+		                        <div class="ileft" id="subMenuDiv">
+		                        	<h3 onclick="clickSubMenu(this,'/ad')"><a>广告管理</a></h3>
+		                        	<h3 onclick="clickSubMenu(this,'/businesses')"><a>商户管理</a></h3>
+		                        	<h3 onclick="clickSubMenu(this,'/orders')"><a>订单查询</a></h3>
+		                        	<h3 onclick="clickSubMenu(this,'/comments')"><a>评论查询</a></h3>
+		                        </div>
 		                    </div>
+		                    
 		                </td>
 		                <td width="7">
 		                    <div class="pointer"></div>

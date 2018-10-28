@@ -27,7 +27,7 @@ public class SessionController {
 	@RequestMapping(value="/menus",method=RequestMethod.GET)
 	@ResponseBody
 	public List<MenuDto> getUserMenuList(MenuDto menuDto) {
-		return (List<MenuDto>) session.getAttribute(SessionKeyConst.MENU_INFO);
+		return (List<MenuDto>)session.getAttribute(SessionKeyConst.MENU_INFO); // session已在LoginController中执行保存
 	}
 	
 	/**
