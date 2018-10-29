@@ -11,9 +11,9 @@
         		common.showMessage('${pageCode.msg}');
         		var topWindow = window;
         		while(topWindow.parent != topWindow) {
-        			topWindow = topWindow.parent;
+        			topWindow = topWindow.parent; // 获取顶层窗体，再进行跳转
         		}
-        		topWindow.location.href = "${basePath}/login";
+        		topWindow.location.href = "${basePath}/login";//使用顶层窗体跳转页面
         	});
 		</script>
     </head>

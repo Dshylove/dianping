@@ -42,7 +42,7 @@ public class LoginController {
 	@RequestMapping("/sessionTimeout")
 	public String sessionTimeout(Model model) {
 		model.addAttribute(PageCodeEnum.KEY, PageCodeEnum.SESSION_TIMEOUT);
-		return "/system/error";
+		return "/system/error"; // 通过错误页面进行返回登录页面
 	}
 	
 	/**
