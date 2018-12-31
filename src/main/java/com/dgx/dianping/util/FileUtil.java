@@ -20,10 +20,12 @@ public class FileUtil {
 	 */
 	public static String save(MultipartFile file, String savePath) throws IllegalStateException, IOException {
 		if (file != null && file.getSize() > 0) {
+			// 判断是否存在文件夹，否则创建文件夹
 			File fileFolder = new File(savePath);
 			if (!fileFolder.exists()) {
 				fileFolder.mkdirs();
 			}
+			
 			File saveFile = getFile(savePath, file.getOriginalFilename());
 			file.transferTo(saveFile);
 			return saveFile.getName();
